@@ -24,11 +24,11 @@
             <div class="table-responsive">  
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 
-                <!-- Button trigger modal -->
+                <!-- Button trigger modal
                 <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <i class="fas fa-plus"></i>
                     Tambah Role
-                </button>
+                </button> -->
 
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -59,7 +59,6 @@
                         <tr>
                             <th>No</th>
                             <th>Role</th>
-                            <th>Guard</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -68,7 +67,6 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ ucFirst($r->name) }}</td>
-                            <td>{{ $r->guard_name }}</td>
                             <td>
                                 <form action="{{ route('role.destroy', $r->id) }}" method="post">
                                     @csrf

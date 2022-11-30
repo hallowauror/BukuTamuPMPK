@@ -78,7 +78,6 @@
                             <th>Nama</th>
                             <th>Email</th>
                             <th>Role</th>
-                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -92,13 +91,6 @@
                                 @foreach ($u->getRoleNames() as $role)
                                 <label for="" class="badge badge-info">{{ ucFirst($role) }}</label>
                                 @endforeach
-                            </td>
-                            <td>
-                                @if($u->status)
-                                <label class="badge badge-success">Aktif</label>
-                                @else
-                                <label for="" class="badge badge-default">Suspend</label>
-                                @endif
                             </td>
                             <td>
                                 <form action="{{ route('user.destroy', $u->id) }}" method="post">

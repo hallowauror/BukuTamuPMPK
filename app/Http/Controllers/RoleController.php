@@ -23,7 +23,7 @@ class RoleController extends Controller
         
         $role = Role::firstOrCreate(['name' => $request->name]);
         
-        Alert::success('Berhasil!', 'Data Pegawai Berhasil Ditambahkan!');
+        Alert::success('Berhasil!', 'Data Role Berhasil Ditambahkan!');
         return redirect('/role');
     }
 
@@ -32,7 +32,7 @@ class RoleController extends Controller
         $role = Role::findOrFail($id);
         $role->delete();
         
-        Alert::success('Berhasil!', 'Data Pegawai Berhasil Ditambahkan!');
+        Alert::success('Berhasil!', 'Data Role Berhasil Dihapus!');
         return redirect('/role');
     }
 }

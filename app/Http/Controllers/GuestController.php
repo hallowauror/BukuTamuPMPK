@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Guest;
 use App\Models\Employee;
+use Barryvdh\DomPDF\Facade\Pdf;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class GuestController extends Controller
@@ -21,7 +22,7 @@ class GuestController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string|max:200',
-            'phone' => 'required|string|max:13',
+            'phone' => 'required|string|min:11|max:13',
             'agency' => 'required|string|max: 200',
             'need' => 'required|string|max:200',
             'day' => 'required',
@@ -29,8 +30,10 @@ class GuestController extends Controller
             'employee_id' => 'required|exists:employees,id'
         ]);
 
+        // dd($request->all());
+
         try {
-            $guest = Guest::create([
+              Guest::create([
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'agency' => $request->agency,
@@ -40,11 +43,9 @@ class GuestController extends Controller
                 'employee_id' => $request->employee_id
             ]);
 
-            Alert::success('Berhasil!', 'Data Tamu Berhasil Ditambahkan!');
-            return redirect('/tamu');
+            return redirect('/tamu-pmpk/terimakasih');
         } catch (\Exception $e) {
-            Alert::error('Terjadi Kesalahan!', 'Data Tamu Gagal Ditambahkan!');
-            return redirect('/tamu');
+            return redirect('/tamu-pmpk');
         }
     }
 
@@ -60,5 +61,26 @@ class GuestController extends Controller
             Alert::error('Terjadi Kesalahan!', 'Data Gagal Dihapus!');
             return redirect('/tamu');
         }
+    }
+
+    public function tamu()
+    {
+        return view('guests.tamu', [
+            'employees' => Employee::all()
+        ]);
+    }
+
+    public function terimakasih()
+    {
+        return view('guests.terimakasih');
+    }
+
+    public function exportPdf(Guest $guest)
+    {
+        $guests = Guest::all();
+
+        $pdf = Pdf::loadView('guests.pdf', compact('guests'));
+
+        return $pdf->stream();
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\Guest;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -22,10 +23,10 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-
 Route::middleware(['auth'])->group(function() {
 
     Route::group(['middleware' => ['role:admin']], function () {
+        
         // Role
         Route::resource('role', RoleController::class)->except([
             'create', 'show', 'edit'
@@ -38,6 +39,7 @@ Route::middleware(['auth'])->group(function() {
     });
 
     Route::group(['middleware' => ['role:admin|security|pegawai']], function () {
+
          // Dashboard
          Route::get('/home', [DashboardController::class, 'index']);
          Route::get('setting', [DashboardController::class, 'setting']);
@@ -50,8 +52,9 @@ Route::middleware(['auth'])->group(function() {
  
          // Tamu
          Route::resource('tamu', GuestController::class)->only([
-             'index', 'store', 'destroy'
+             'index', 'destroy'
          ]);
+         Route::get('/tamu/pdf', [GuestController::class, 'exportPdf'])->name('export');
  
     });
     
@@ -60,4 +63,7 @@ Route::middleware(['auth'])->group(function() {
 });
 
 
+Route::get('/tamu-pmpk', [GuestController::class, 'tamu']);
+Route::post('tamu-pmpk', [GuestController::class, 'store'])->name('tamu-pmpk.store');
+Route::get('/tamu-pmpk/terimakasih', [GuestController::class, 'terimakasih']);
 
